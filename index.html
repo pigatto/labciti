@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LabCITI — Laboratório de Computação, Inteligência e Tecnologia da Informação | UTFPR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --utfpr-yellow: #F5C400;
+    --utfpr-blue: #003366;
+    --ink: #0A0E1A;
+    --ink-60: rgba(10,14,26,0.6);
+    --ink-20: rgba(10,14,26,0.08);
+    --white: #FFFFFF;
+    --surface: #F7F6F2;
+    --accent-teal: #00C4A7;
+    --accent-coral: #FF5C3A;
+    --grid-line: rgba(10,14,26,0.06);
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--white);
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID BACKGROUND ── */
+  .grid-bg {
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 64px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--ink-20);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--ink);
+  }
+
+  .nav-logo-mark {
+    width: 36px; height: 36px;
+    background: var(--ink);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .nav-logo-mark svg { width: 20px; height: 20px; }
+
+  .nav-logo-text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo-sub {
+    font-size: 0.7rem;
+    color: var(--ink-60);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-60);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    background: var(--utfpr-yellow) !important;
+    color: var(--ink) !important;
+    padding: 0.45rem 1.1rem;
+    border-radius: 6px;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 2.5rem 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-overlay {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-accent-blob {
+    position: absolute;
+    top: -100px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(ellipse, rgba(245,196,0,0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-accent-blob-2 {
+    position: absolute;
+    bottom: -150px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(ellipse, rgba(0,196,167,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ink-20);
+    border: 1px solid rgba(10,14,26,0.12);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-60);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-badge-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent-teal);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+
+  .hero-title .hl {
+    color: var(--utfpr-blue);
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-title .hl::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; left: 0; right: 0;
+    height: 6px;
+    background: var(--utfpr-yellow);
+    z-index: -1;
+    border-radius: 2px;
+  }
+
+  .hero-desc {
+    font-size: 1.1rem;
+    color: var(--ink-60);
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ink);
+    color: var(--white);
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-primary:hover {
+    background: var(--utfpr-blue);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--ink);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(10,14,26,0.2);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-ghost:hover { background: var(--ink-20); border-color: rgba(10,14,26,0.35); }
+
+  .hero-visual {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .hero-card-stack {
+    position: relative;
+    width: 380px; height: 380px;
+  }
+
+  .hero-card {
+    position: absolute;
+    background: var(--white);
+    border: 1px solid rgba(10,14,26,0.1);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 20px 60px rgba(10,14,26,0.08);
+  }
+
+  .hero-card-main {
+    width: 320px;
+    top: 20px; left: 30px;
+    z-index: 3;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .hero-card-back {
+    width: 280px;
+    top: 50px; left: 80px;
+    z-index: 1;
+    background: var(--utfpr-blue);
+    transform: rotate(-6deg);
+    animation: float 6s ease-in-out infinite 1s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .hero-card-back.float-rot {
+    animation: floatrot 6s ease-in-out infinite 1s;
+  }
+
+  @keyframes floatrot {
+    0%, 100% { transform: rotate(-6deg) translateY(0); }
+    50% { transform: rotate(-6deg) translateY(-8px); }
+  }
+
+  .stat-row {
+    display: flex; gap: 1.5rem; margin-top: 1.25rem;
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .stat-num span {
+    color: var(--utfpr-yellow);
+    -webkit-text-stroke: 1px var(--ink);
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--ink-60);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .tag-chip {
+    display: inline-block;
+    background: var(--surface);
+    border-radius: 6px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink-60);
+    letter-spacing: 0.02em;
+    margin: 0 4px 4px 0;
+  }
+
+  /* ── SECTION BASE ── */
+  section {
+    padding: 100px 2.5rem;
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-teal);
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 20px; height: 2px;
+    background: var(--accent-teal);
+    border-radius: 1px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  .section-desc {
+    font-size: 1.05rem;
+    color: var(--ink-60);
+    max-width: 560px;
+    line-height: 1.75;
+    font-weight: 300;
+    margin-bottom: 3rem;
+  }
+
+  /* ── ABOUT ── */
+  #sobre { background: var(--surface); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-feature-list {
+    margin-top: 2rem;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+
+  .about-feature {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid rgba(10,14,26,0.08);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .about-feature:hover { border-color: rgba(10,14,26,0.2); transform: translateX(4px); }
+
+  .feature-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  .feature-icon.yellow { background: rgba(245,196,0,0.15); }
+  .feature-icon.teal { background: rgba(0,196,167,0.12); }
+  .feature-icon.coral { background: rgba(255,92,58,0.1); }
+  .feature-icon.blue { background: rgba(0,51,102,0.1); }
+
+  .feature-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.2rem;
+  }
+
+  .feature-desc {
+    font-size: 0.875rem;
+    color: var(--ink-60);
+    line-height: 1.6;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-mosaic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 12px;
+  }
+
+  .mosaic-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid rgba(10,14,26,0.08);
+    padding: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .mosaic-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(10,14,26,0.1); }
+
+  .mosaic-card.wide { grid-column: 1 / -1; background: var(--utfpr-blue); color: var(--white); }
+
+  .mosaic-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .mosaic-num.accent { color: var(--utfpr-yellow); }
+
+  .mosaic-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+
+  .mosaic-card.wide .mosaic-label { opacity: 0.7; color: rgba(255,255,255,0.7); }
+
+  .mosaic-wide-inner {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  /* ── RESEARCH AREAS ── */
+  #pesquisa { background: var(--white); }
+
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 0;
+  }
+
+  .research-card {
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(10,14,26,0.08);
+    background: var(--white);
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .research-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--card-accent, var(--ink));
+    border-radius: 1px 1px 0 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .research-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(10,14,26,0.1);
+    border-color: rgba(10,14,26,0.15);
+  }
+
+  .research-card:hover::before { transform: scaleX(1); }
+
+  .research-card.c1 { --card-accent: var(--utfpr-yellow); }
+  .research-card.c2 { --card-accent: var(--accent-teal); }
+  .research-card.c3 { --card-accent: var(--accent-coral); }
+  .research-card.c4 { --card-accent: var(--utfpr-blue); }
+  .research-card.c5 { --card-accent: #9B59B6; }
+  .research-card.c6 { --card-accent: #E67E22; }
+
+  .research-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .research-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    color: var(--ink);
+  }
+
+  .research-desc {
+    font-size: 0.875rem;
+    color: var(--ink-60);
+    line-height: 1.7;
+  }
+
+  .research-tags {
+    margin-top: 1.25rem;
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+
+  .rt {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    background: var(--ink-20);
+    color: var(--ink-60);
+  }
+
+  /* ── PUBLICATIONS ── */
+  #publicacoes { background: var(--surface); }
+
+  .pubs-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .pubs-list {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+
+  .pub-card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid rgba(10,14,26,0.08);
+    padding: 1.25rem 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .pub-card:hover { border-color: rgba(10,14,26,0.2); transform: translateX(4px); }
+
+  .pub-meta {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 0.5rem;
+  }
+
+  .pub-year {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent-teal);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+  .pub-type {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .pub-type.journal { background: rgba(0,196,167,0.1); color: var(--accent-teal); }
+  .pub-type.conference { background: rgba(245,196,0,0.15); color: #A07800; }
+  .pub-type.workshop { background: rgba(255,92,58,0.1); color: var(--accent-coral); }
+
+  .pub-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.5;
+    margin-bottom: 0.35rem;
+    color: var(--ink);
+  }
+
+  .pub-authors {
+    font-size: 0.82rem;
+    color: var(--ink-60);
+  }
+
+  .pub-venue {
+    font-size: 0.82rem;
+    color: var(--ink-60);
+    font-style: italic;
+  }
+
+  /* ── TEAM ── */
+  #equipe { background: var(--white); }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .team-card {
+    text-align: center;
+    padding: 2rem 1.25rem;
+    border-radius: 16px;
+    border: 1px solid rgba(10,14,26,0.08);
+    background: var(--white);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .team-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(10,14,26,0.1);
+  }
+
+  .team-avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--white);
+    position: relative;
+  }
+
+  .team-avatar::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--utfpr-yellow), transparent 60%);
+    z-index: -1;
+  }
+
+  .av1 { background: var(--utfpr-blue); }
+  .av2 { background: #2E4057; }
+  .av3 { background: #1B4332; }
+  .av4 { background: #6B2D6B; }
+  .av5 { background: #7B2D00; }
+  .av6 { background: #1A3A5C; }
+  .av7 { background: #0A4025; }
+  .av8 { background: #3D0C02; }
+
+  .team-name {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.25rem;
+  }
+
+  .team-role {
+    font-size: 0.78rem;
+    color: var(--ink-60);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .team-area {
+    font-size: 0.8rem;
+    color: var(--ink-60);
+    line-height: 1.5;
+  }
+
+  .team-lattes {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--utfpr-blue);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+
+  .team-lattes:hover { color: var(--accent-teal); }
+
+  /* ── PROJECTS ── */
+  #projetos { background: var(--surface); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid rgba(10,14,26,0.08);
+    padding: 2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--utfpr-yellow), var(--accent-teal));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s;
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(10,14,26,0.1);
+  }
+
+  .project-card:hover::after { transform: scaleX(1); }
+
+  .project-status {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+
+  .project-status.active { color: var(--accent-teal); }
+  .project-status.active::before {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent-teal);
+    animation: pulse 2s infinite;
+  }
+
+  .project-status.finished { color: var(--ink-60); }
+  .project-status.finished::before {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--ink-60);
+  }
+
+  .project-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+    color: var(--ink);
+  }
+
+  .project-desc {
+    font-size: 0.875rem;
+    color: var(--ink-60);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  .project-funding {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.78rem;
+    color: var(--ink-60);
+    border-top: 1px solid rgba(10,14,26,0.07);
+    padding-top: 1rem;
+    margin-top: auto;
+  }
+
+  .funding-badge {
+    display: inline-block;
+    background: var(--ink-20);
+    border-radius: 4px;
+    padding: 0.2rem 0.55rem;
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+
+  /* ── CONTACT ── */
+  #contato { background: var(--utfpr-blue); color: var(--white); }
+
+  #contato .section-label { color: var(--utfpr-yellow); }
+  #contato .section-label::before { background: var(--utfpr-yellow); }
+  #contato .section-title { color: var(--white); }
+  #contato .section-desc { color: rgba(255,255,255,0.65); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .contact-info {
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+  }
+
+  .contact-icon-wrap {
+    width: 44px; height: 44px; flex-shrink: 0;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  .contact-item-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-item-value {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.6;
+  }
+
+  .contact-item-value a {
+    color: var(--utfpr-yellow);
+    text-decoration: none;
+  }
+
+  .contact-form {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+
+  .form-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+
+  .form-group {
+    display: flex; flex-direction: column; gap: 0.4rem;
+  }
+
+  .form-group label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: rgba(255,255,255,0.3);
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--utfpr-yellow);
+    background: rgba(255,255,255,0.12);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 100px; }
+
+  .btn-submit {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--utfpr-yellow);
+    color: var(--ink);
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    align-self: flex-start;
+  }
+
+  .btn-submit:hover { transform: translateY(-1px); opacity: 0.9; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.5);
+    padding: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-brand {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+
+  .footer-links {
+    display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: rgba(255,255,255,0.8); }
+
+  .footer-copy {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* ── UTILITIES ── */
+  .divider {
+    width: 60px; height: 3px;
+    background: var(--utfpr-yellow);
+    border-radius: 2px;
+    margin: 1.5rem 0;
+  }
+
+  .separator {
+    height: 1px;
+    background: rgba(10,14,26,0.07);
+    margin: 1.5rem 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav .nav-links { display: none; }
+
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .research-grid { grid-template-columns: 1fr 1fr; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .pubs-layout { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    section { padding: 60px 1.25rem; }
+    nav { padding: 0 1.25rem; }
+    #hero { padding: 100px 1.25rem 60px; }
+    .research-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="7" height="7" rx="1.5" fill="#F5C400"/>
+        <rect x="11" y="2" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+        <rect x="2" y="11" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+        <rect x="11" y="11" width="7" height="7" rx="1.5" fill="white"/>
+      </svg>
+    </div>
+    <div>
+      <div class="nav-logo-text">LabCITI</div>
+      <div class="nav-logo-sub">UTFPR</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#pesquisa">Pesquisa</a></li>
+    <li><a href="#publicacoes">Publicações</a></li>
+    <li><a href="#equipe">Equipe</a></li>
+    <li><a href="#projetos">Projetos</a></li>
+    <li><a href="#contato" class="nav-cta">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-overlay"></div>
+  <div class="hero-accent-blob"></div>
+  <div class="hero-accent-blob-2"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        UTFPR — Curitiba, PR
+      </div>
+      <h1 class="hero-title">
+        Lab<span class="hl">CITI</span><br>
+        Pesquisa em<br>
+        Computação &amp;<br>
+        Tecnologia
+      </h1>
+      <p class="hero-desc">
+        Laboratório de Computação, Inteligência e Tecnologia da Informação da Universidade Tecnológica Federal do Paraná. Desenvolvemos pesquisa de ponta em IA, sistemas distribuídos e segurança computacional.
+      </p>
+      <div class="hero-actions">
+        <a href="#pesquisa" class="btn-primary">
+          Ver pesquisas
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#publicacoes" class="btn-ghost">Publicações</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <div class="hero-card hero-card-back float-rot"></div>
+        <div class="hero-card hero-card-main">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:1rem;">
+            <div style="width:8px;height:8px;border-radius:50%;background:#F5C400;"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:rgba(10,14,26,0.15);"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:rgba(10,14,26,0.15);"></div>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:0.78rem;color:var(--ink-60);line-height:1.9;">
+            <span style="color:#003366;">import</span> labciti<br>
+            <span style="color:#003366;">from</span> <span style="color:#00C4A7;">'utfpr.br'</span><br><br>
+            model = labciti.<span style="color:#F5C400;">research</span>(<br>
+            &nbsp;&nbsp;area=<span style="color:#00C4A7;">"AI"</span>,<br>
+            &nbsp;&nbsp;output=<span style="color:#00C4A7;">"impact"</span><br>
+            )
+          </div>
+          <div class="stat-row">
+            <div class="stat-item">
+              <div class="stat-num">12<span>+</span></div>
+              <div class="stat-label">Pesquisadores</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">80<span>+</span></div>
+              <div class="stat-label">Publicações</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">15<span>+</span></div>
+              <div class="stat-label">Projetos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-content">
+        <div class="section-label">Sobre o laboratório</div>
+        <h2 class="section-title">Inovação em pesquisa desde 2010</h2>
+        <div class="divider"></div>
+        <p class="section-desc" style="margin-bottom:1.5rem;">
+          O LabCITI é um laboratório de pesquisa vinculado ao Departamento de Informática da UTFPR, focado no avanço do conhecimento em áreas fundamentais da computação e na formação de pesquisadores de excelência.
+        </p>
+        <p style="font-size:0.95rem;color:var(--ink-60);line-height:1.8;font-weight:300;">
+          Nosso trabalho combina rigor acadêmico com aplicação prática, gerando soluções para desafios reais da sociedade e da indústria. Colaboramos com empresas, outras universidades e organismos de fomento nacionais e internacionais.
+        </p>
+        <div class="about-feature-list">
+          <div class="about-feature">
+            <div class="feature-icon yellow">🔬</div>
+            <div>
+              <div class="feature-title">Pesquisa de alto impacto</div>
+              <div class="feature-desc">Publicações em conferências e periódicos de alto Qualis/JCR nas principais áreas da computação.</div>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-icon teal">🎓</div>
+            <div>
+              <div class="feature-title">Formação de talentos</div>
+              <div class="feature-desc">Programas de iniciação científica, mestrado e doutorado com bolsas CAPES, CNPq e FAPESP.</div>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-icon coral">🤝</div>
+            <div>
+              <div class="feature-title">Parcerias estratégicas</div>
+              <div class="feature-desc">Colaborações ativas com indústria, governo e instituições de pesquisa no Brasil e no exterior.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual fade-in">
+        <div class="about-mosaic">
+          <div class="mosaic-card">
+            <div class="mosaic-num accent">80+</div>
+            <div class="mosaic-label">Publicações</div>
+          </div>
+          <div class="mosaic-card">
+            <div class="mosaic-num" style="color:var(--utfpr-blue);">12+</div>
+            <div class="mosaic-label">Pesquisadores</div>
+          </div>
+          <div class="mosaic-card wide">
+            <div class="mosaic-wide-inner">
+              <div>
+                <div class="mosaic-num" style="color:var(--utfpr-yellow);">14 anos</div>
+                <div class="mosaic-label" style="color:rgba(255,255,255,0.6);">de pesquisa &amp; inovação</div>
+              </div>
+              <div style="font-size:2.5rem;opacity:0.4;">⚗️</div>
+            </div>
+          </div>
+          <div class="mosaic-card">
+            <div class="mosaic-num accent">R$2M+</div>
+            <div class="mosaic-label">em fomento captado</div>
+          </div>
+          <div class="mosaic-card">
+            <div class="mosaic-num" style="color:var(--utfpr-blue);">15+</div>
+            <div class="mosaic-label">Projetos ativos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÁREAS DE PESQUISA -->
+<section id="pesquisa">
+  <div class="section-inner">
+    <div class="section-label">Linhas de pesquisa</div>
+    <h2 class="section-title">O que pesquisamos</h2>
+    <p class="section-desc">Nossas pesquisas abrangem desde fundamentos teóricos até aplicações com impacto direto na sociedade e na indústria.</p>
+    <div class="research-grid">
+      <div class="research-card c1 fade-in">
+        <span class="research-icon">🤖</span>
+        <div class="research-title">Inteligência Artificial e Aprendizado de Máquina</div>
+        <p class="research-desc">Modelos de deep learning, NLP, visão computacional e raciocínio automatizado para aplicações críticas em saúde, agronegócio e cidades inteligentes.</p>
+        <div class="research-tags">
+          <span class="rt">Deep Learning</span>
+          <span class="rt">NLP</span>
+          <span class="rt">Computer Vision</span>
+          <span class="rt">LLMs</span>
+        </div>
+      </div>
+      <div class="research-card c2 fade-in">
+        <span class="research-icon">🌐</span>
+        <div class="research-title">Sistemas Distribuídos e Computação em Nuvem</div>
+        <p class="research-desc">Arquiteturas de microsserviços, edge computing, tolerância a falhas, escalonamento e orquestração de serviços em ambientes híbridos e de larga escala.</p>
+        <div class="research-tags">
+          <span class="rt">Kubernetes</span>
+          <span class="rt">Edge Computing</span>
+          <span class="rt">Fog</span>
+          <span class="rt">IoT</span>
+        </div>
+      </div>
+      <div class="research-card c3 fade-in">
+        <span class="research-icon">🔒</span>
+        <div class="research-title">Segurança da Informação e Criptografia</div>
+        <p class="research-desc">Protocolos criptográficos pós-quânticos, análise de vulnerabilidades, privacidade diferencial e detecção de ameaças com inteligência artificial.</p>
+        <div class="research-tags">
+          <span class="rt">Criptografia</span>
+          <span class="rt">Pós-Quântico</span>
+          <span class="rt">Zero Trust</span>
+        </div>
+      </div>
+      <div class="research-card c4 fade-in">
+        <span class="research-icon">📊</span>
+        <div class="research-title">Engenharia de Dados e Ciência de Dados</div>
+        <p class="research-desc">Pipelines de dados em larga escala, data lakes, análise preditiva, qualidade de dados e governança para suporte à tomada de decisão baseada em evidências.</p>
+        <div class="research-tags">
+          <span class="rt">Big Data</span>
+          <span class="rt">Data Lakes</span>
+          <span class="rt">MLOps</span>
+        </div>
+      </div>
+      <div class="research-card c5 fade-in">
+        <span class="research-icon">🧬</span>
+        <div class="research-title">Bioinformática e Saúde Digital</div>
+        <p class="research-desc">Análise de sequências genômicas, diagnóstico auxiliado por IA, telemedicina e mineração de prontuários eletrônicos para apoio clínico e epidemiológico.</p>
+        <div class="research-tags">
+          <span class="rt">Genômica</span>
+          <span class="rt">Saúde</span>
+          <span class="rt">EHR Mining</span>
+        </div>
+      </div>
+      <div class="research-card c6 fade-in">
+        <span class="research-icon">🏙️</span>
+        <div class="research-title">Cidades Inteligentes e Mobilidade Urbana</div>
+        <p class="research-desc">Sensoriamento urbano, otimização de tráfego, análise de mobilidade e infraestrutura digital para tornar cidades mais eficientes, inclusivas e sustentáveis.</p>
+        <div class="research-tags">
+          <span class="rt">Smart Cities</span>
+          <span class="rt">Mobilidade</span>
+          <span class="rt">GIS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICAÇÕES -->
+<section id="publicacoes">
+  <div class="section-inner">
+    <div class="pubs-layout">
+      <div class="pubs-header">
+        <div class="section-label">Produção científica</div>
+        <h2 class="section-title">Publicações em destaque</h2>
+        <div class="divider"></div>
+        <p style="font-size:0.9rem;color:var(--ink-60);line-height:1.75;">Seleção das publicações mais recentes e relevantes do grupo. Para a lista completa, acesse o <a href="http://lattes.cnpq.br" target="_blank" style="color:var(--utfpr-blue);font-weight:500;">Currículo Lattes</a> de cada membro.</p>
+        <div style="margin-top:2rem;display:flex;flex-direction:column;gap:0.75rem;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--ink-60);">
+            <span style="width:10px;height:10px;border-radius:3px;background:rgba(0,196,167,0.1);border:1px solid var(--accent-teal);display:inline-block;"></span> Periódico
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--ink-60);">
+            <span style="width:10px;height:10px;border-radius:3px;background:rgba(245,196,0,0.15);display:inline-block;"></span> Conferência
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--ink-60);">
+            <span style="width:10px;height:10px;border-radius:3px;background:rgba(255,92,58,0.1);display:inline-block;"></span> Workshop
+          </div>
+        </div>
+      </div>
+      <div class="pubs-list">
+        <div class="pub-card">
+          <div class="pub-meta">
+            <span class="pub-year">2024</span>
+            <span class="pub-type journal">Periódico</span>
+          </div>
+          <div class="pub-title">Federated Learning with Differential Privacy for Medical Image Segmentation in Heterogeneous Environments</div>
+          <div class="pub-authors">Silva, R. A.; Ferreira, M. C.; Costa, L. T.; et al.</div>
+          <div class="pub-venue">IEEE Transactions on Medical Imaging, v. 43, n. 2, 2024</div>
+        </div>
+        <div class="pub-card">
+          <div class="pub-meta">
+            <span class="pub-year">2024</span>
+            <span class="pub-type conference">Conferência</span>
+          </div>
+          <div class="pub-title">Scalable Edge Orchestration for Real-Time IoT Analytics Using Lightweight Transformers</div>
+          <div class="pub-authors">Oliveira, P. H.; Martins, J. P.; Rodrigues, A. F.</div>
+          <div class="pub-venue">ACM MobiSys 2024 — Proceedings, Tóquio, Japão</div>
+        </div>
+        <div class="pub-card">
+          <div class="pub-meta">
+            <span class="pub-year">2023</span>
+            <span class="pub-type journal">Periódico</span>
+          </div>
+          <div class="pub-title">Post-Quantum Authenticated Key Exchange Protocol for Constrained IoT Devices</div>
+          <div class="pub-authors">Santos, C. R.; Lima, B. S.; Pereira, W. T.</div>
+          <div class="pub-venue">Journal of Information Security and Applications, Elsevier, 2023</div>
+        </div>
+        <div class="pub-card">
+          <div class="pub-meta">
+            <span class="pub-year">2023</span>
+            <span class="pub-type conference">Conferência</span>
+          </div>
+          <div class="pub-title">Urban Traffic Flow Prediction with Spatiotemporal Graph Neural Networks and Contextual Embeddings</div>
+          <div class="pub-authors">Alves, T. F.; Carvalho, D. M.; Ferreira, M. C.</div>
+          <div class="pub-venue">AAAI 2023 — Proceedings, Washington D.C., EUA</div>
+        </div>
+        <div class="pub-card">
+          <div class="pub-meta">
+            <span class="pub-year">2023</span>
+            <span class="pub-type workshop">Workshop</span>
+          </div>
+          <div class="pub-title">Evaluating LLM-assisted Code Review for Security Vulnerabilities in Open Source Projects</div>
+          <div class="pub-authors">Rodrigues, A. F.; Oliveira, P. H.; Costa, L. T.</div>
+          <div class="pub-venue">SecDev 2023 — IEEE Workshop, Atlanta, EUA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPE -->
+<section id="equipe">
+  <div class="section-inner">
+    <div class="section-label">Quem somos</div>
+    <h2 class="section-title">Nossa equipe</h2>
+    <p class="section-desc">Pesquisadores, professores e estudantes movidos pela curiosidade científica e pelo impacto real da tecnologia.</p>
+    <div class="team-grid">
+      <div class="team-card fade-in">
+        <div class="team-avatar av1">RS</div>
+        <div class="team-name">Prof. Dr. Rafael Silva</div>
+        <div class="team-role">Coordenador</div>
+        <div class="team-area">IA, Aprendizado Federado, Privacidade</div>
+        <a href="#" class="team-lattes">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6h4M6 4v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Lattes
+        </a>
+      </div>
+      <div class="team-card fade-in">
+        <div class="team-avatar av2">MC</div>
+        <div class="team-name">Profa. Dra. Mariana Costa</div>
+        <div class="team-role">Pesquisadora</div>
+        <div class="team-area">Visão Computacional, Saúde Digital</div>
+        <a href="#" class="team-lattes">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6h4M6 4v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Lattes
+        </a>
+      </div>
+      <div class="team-card fade-in">
+        <div class="team-avatar av3">PO</div>
+        <div class="team-name">Prof. Dr. Pedro Oliveira</div>
+        <div class="team-role">Pesquisador</div>
+        <div class="team-area">Sistemas Distribuídos, Edge</div>
+        <a href="#" class="team-lattes">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6h4M6 4v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Lattes
+        </a>
+      </div>
+      <div class="team-card fade-in">
+        <div class="team-avatar av4">CS</div>
+        <div class="team-name">Profa. Dra. Camila Santos</div>
+        <div class="team-role">Pesquisadora</div>
+        <div class="team-area">Segurança, Criptografia Pós-Quântica</div>
+        <a href="#" class="team-lattes">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6h4M6 4v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Lattes
+        </a>
+      </div>
+      <div class="team-card fade-in">
+        <div class="team-avatar av5">TA</div>
+        <div class="team-name">Thiago Alves</div>
+        <div class="team-role">Doutorando</div>
+        <div class="team-area">Cidades Inteligentes, Graph NNs</div>
+        <a href="#" class="team-lattes">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6h4M6 4v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Lattes
+        </a>
+      </div>
+      <div class="team-card fade-in">
+        <div class="team-avatar av6">AR</div>
+        <div class="team-name">Ana Rodrigues</div>
+        <div class="team-role">Doutoranda</div>
+        <div class="team-area">LLMs, Segurança de Código</div>
+        <a href="#" class="team-lattes">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6h4M6 4v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Lattes
+        </a>
+      </div>
+      <div class="team-card fade-in">
+        <div class="team-avatar av7">JM</div>
+        <div class="team-name">João Martins</div>
+        <div class="team-role">Mestrando</div>
+        <div class="team-area">IoT, Computação em Névoa</div>
+        <a href="#" class="team-lattes">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6h4M6 4v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Lattes
+        </a>
+      </div>
+      <div class="team-card fade-in">
+        <div class="team-avatar av8">BL</div>
+        <div class="team-name">Beatriz Lima</div>
+        <div class="team-role">Iniciação Científica</div>
+        <div class="team-area">NLP, Análise de Sentimentos</div>
+        <a href="#" class="team-lattes">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6h4M6 4v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Lattes
+        </a>
+      </div>
+    </div>
+    <div style="text-align:center;padding:2rem;background:var(--surface);border-radius:16px;border:1px solid rgba(10,14,26,0.07);">
+      <p style="font-size:0.95rem;color:var(--ink-60);margin-bottom:1rem;">Interessado em ingressar no LabCITI como mestrando, doutorando ou pós-doutorando?</p>
+      <a href="#contato" class="btn-primary" style="display:inline-flex;">Fale conosco →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETOS -->
+<section id="projetos">
+  <div class="section-inner">
+    <div class="section-label">Projetos de pesquisa</div>
+    <h2 class="section-title">Em andamento &amp; concluídos</h2>
+    <p class="section-desc">Projetos financiados por agências de fomento nacionais e em parceria com empresas e governo.</p>
+    <div class="projects-grid">
+      <div class="project-card fade-in">
+        <div class="project-status active">Em andamento</div>
+        <div class="project-title">IA Federada para Diagnóstico Médico em Rede Hospitalar Distribuída</div>
+        <p class="project-desc">Desenvolvimento de uma plataforma de aprendizado federado com privacidade diferencial para integrar modelos de diagnóstico em imagens médicas entre hospitais sem compartilhamento de dados sensíveis.</p>
+        <div class="research-tags" style="margin-bottom:1rem;">
+          <span class="rt">Federated Learning</span>
+          <span class="rt">DP</span>
+          <span class="rt">DICOM</span>
+        </div>
+        <div class="project-funding">
+          <span class="funding-badge">CNPq</span>
+          <span class="funding-badge">FAPESP</span>
+          <span>2023 – 2026 · R$ 480.000</span>
+        </div>
+      </div>
+      <div class="project-card fade-in">
+        <div class="project-status active">Em andamento</div>
+        <div class="project-title">Infraestrutura de Edge Computing para Monitoramento Inteligente de Rodovias Federais</div>
+        <p class="project-desc">Plataforma distribuída com sensores embarcados, análise de fluxo em tempo real e alertas preditivos para acidentes e condições adversas nas principais rodovias do Sul do Brasil.</p>
+        <div class="research-tags" style="margin-bottom:1rem;">
+          <span class="rt">Edge AI</span>
+          <span class="rt">IoT</span>
+          <span class="rt">Tempo Real</span>
+        </div>
+        <div class="project-funding">
+          <span class="funding-badge">ANTT</span>
+          <span class="funding-badge">FINEP</span>
+          <span>2022 – 2025 · R$ 720.000</span>
+        </div>
+      </div>
+      <div class="project-card fade-in">
+        <div class="project-status active">Em andamento</div>
+        <div class="project-title">Criptografia Pós-Quântica para Dispositivos Embarcados de Baixo Consumo</div>
+        <p class="project-desc">Implementação e avaliação de algoritmos NIST PQC (CRYSTALS-Kyber, Dilithium) em microcontroladores ARM Cortex-M para garantir segurança de longo prazo em dispositivos IoT críticos.</p>
+        <div class="research-tags" style="margin-bottom:1rem;">
+          <span class="rt">PQC</span>
+          <span class="rt">ARM</span>
+          <span class="rt">NIST</span>
+        </div>
+        <div class="project-funding">
+          <span class="funding-badge">CNPq</span>
+          <span>2023 – 2025 · R$ 280.000</span>
+        </div>
+      </div>
+      <div class="project-card fade-in">
+        <div class="project-status finished">Concluído</div>
+        <div class="project-title">Plataforma de Análise Preditiva para Mobilidade Urbana em Curitiba</div>
+        <p class="project-desc">Sistema de predição de demanda de transporte público utilizando Graph Neural Networks e dados históricos do IPPUC/URBS, com integração ao painel de gestão da prefeitura.</p>
+        <div class="research-tags" style="margin-bottom:1rem;">
+          <span class="rt">Graph NN</span>
+          <span class="rt">GTFS</span>
+          <span class="rt">Curitiba</span>
+        </div>
+        <div class="project-funding">
+          <span class="funding-badge">IPPUC</span>
+          <span class="funding-badge">MCTIC</span>
+          <span>2020 – 2023 · R$ 520.000</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div>
+        <div class="section-label">Fale conosco</div>
+        <h2 class="section-title">Vamos colaborar?</h2>
+        <p class="section-desc">Estamos abertos a colaborações científicas, parcerias com a indústria, e recebemos candidaturas para vagas de pesquisa.</p>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon-wrap">📍</div>
+            <div>
+              <div class="contact-item-title">Endereço</div>
+              <div class="contact-item-value">Av. Sete de Setembro, 3165 — Bloco C<br>Curitiba — PR, CEP 80230-901</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-wrap">✉️</div>
+            <div>
+              <div class="contact-item-title">E-mail</div>
+              <div class="contact-item-value"><a href="mailto:labciti@utfpr.edu.br">labciti@utfpr.edu.br</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-wrap">🌐</div>
+            <div>
+              <div class="contact-item-title">Web</div>
+              <div class="contact-item-value"><a href="https://labciti.ct.utfpr.edu.br" target="_blank">labciti.ct.utfpr.edu.br</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-wrap">💼</div>
+            <div>
+              <div class="contact-item-title">Lattes / GitHub</div>
+              <div class="contact-item-value">
+                <a href="http://dgp.cnpq.br" target="_blank">Diretório DGP/CNPq</a><br>
+                <a href="https://github.com/labciti-utfpr" target="_blank">github.com/labciti-utfpr</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome</label>
+              <input type="text" placeholder="Seu nome completo">
+            </div>
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email" placeholder="seu@email.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Assunto</label>
+            <input type="text" placeholder="Colaboração, candidatura, parceria...">
+          </div>
+          <div class="form-group">
+            <label>Vínculo</label>
+            <select>
+              <option value="" disabled selected>Selecione sua área de interesse</option>
+              <option>Parceria com a indústria</option>
+              <option>Candidatura a mestrado / doutorado</option>
+              <option>Colaboração científica</option>
+              <option>Iniciação científica</option>
+              <option>Imprensa e comunicação</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Mensagem</label>
+            <textarea placeholder="Descreva brevemente seu interesse ou proposta..."></textarea>
+          </div>
+          <button class="btn-submit" type="button">
+            Enviar mensagem
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">LabCITI — UTFPR</div>
+    <div style="font-size:0.78rem;margin-top:4px;color:rgba(255,255,255,0.3);">Laboratório de Computação, Inteligência e Tecnologia da Informação</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#pesquisa">Pesquisa</a></li>
+    <li><a href="#publicacoes">Publicações</a></li>
+    <li><a href="#equipe">Equipe</a></li>
+    <li><a href="#projetos">Projetos</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <div class="footer-copy">© 2024 LabCITI · UTFPR · Curitiba, PR</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
